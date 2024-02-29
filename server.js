@@ -24,4 +24,8 @@ let persons = [
         name: "Mary Poppendick",
         number: "39-23-6423122"
     },
-]
+];
+
+app.get("/persons", (request, response) => {
+    return response.json(persons);
+});
