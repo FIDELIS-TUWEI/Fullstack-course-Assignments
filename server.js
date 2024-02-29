@@ -1,5 +1,5 @@
 const express = require("express");
-const app = express;
+const app = express();
 
 app.use(express.json());
 
@@ -26,6 +26,24 @@ let persons = [
     },
 ];
 
-app.get("/persons", (request, response) => {
+app.get("/", (request, response) => {
+    return response.send("Backend Server is running")
+})
+
+app.get("/api/persons", (request, response) => {
     return response.json(persons);
 });
+
+app.get("/info", (request, response) => {
+    const timestamp = new Date().toString();
+    const count = persons.length;
+    return response.send(
+        `Phonebook has info for ${count} people 
+        ${timestamp}
+    `
+    )
+})
+
+const PORT = 3001;
+app.listen(PORT);
+console.log(`Server is running on port ${PORT}`);
