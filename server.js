@@ -56,7 +56,10 @@ app.get("/info", (request, response) => {
         ${timestamp}
     `
     )
-})
+});
+
+// Disable server fingerprinting
+app.disable('x-powered-by');
 
 const PORT = 3001;
 app.listen(PORT);
