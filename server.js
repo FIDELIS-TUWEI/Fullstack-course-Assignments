@@ -34,6 +34,20 @@ app.get("/api/persons", (request, response) => {
     return response.json(persons);
 });
 
+// get request for a single resource
+app.get("/api/persons/:id", (request, response) => {
+    const id = Number(request.params.id);
+    const person = persons.find(person => {
+        return person.id === id
+    });
+
+    if (person) {
+        return response.json(person);
+    } else {
+        return response.status(404).end();
+    }
+})
+
 app.get("/info", (request, response) => {
     const timestamp = new Date().toString();
     const count = persons.length;
