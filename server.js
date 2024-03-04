@@ -48,6 +48,36 @@ app.get("/api/persons/:id", (request, response) => {
     }
 });
 
+// post request
+app.post("/api/persons", (request, response) => {
+    const body = request.body;
+
+    if (!body.content) {
+        return response.status(400).json({
+            error: "Content missing!"
+        });
+    };
+
+    const person = {
+        content: body.content,
+        important: body.important || false,
+        id: generateId(),
+    };
+
+    persons = persons.concat(person)
+
+    response.json(person);
+});
+
+// generate random ID for post request
+const generateId = () => {
+    const maxId = persons.length > 0
+        ? Math.random(...persons.map(n => n.id))
+        : 0
+
+    return maxId + 1;
+}
+
 // delete request
 app.delete("/api/persons/:id", (request, response) => {
     const id = Number(request.params.id);
