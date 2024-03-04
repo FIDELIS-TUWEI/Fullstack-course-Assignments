@@ -51,12 +51,18 @@ app.get("/api/persons/:id", (request, response) => {
 // post request
 app.post("/api/persons", (request, response) => {
     const body = request.body;
+    const id = Number(request.params.id)
+    const existingPerson = persons.find(person => person.id === id);
 
     if (!body.content) {
         return response.status(400).json({
-            error: "Content missing!"
+            error: "name or number missing!"
         });
-    };
+    } else if(existingPerson) {
+        return response.status(400).json({
+            error: "name must be unique"
+        });
+    }
 
     const person = {
         content: body.content,
