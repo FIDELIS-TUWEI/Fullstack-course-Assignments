@@ -1,7 +1,15 @@
 const express = require("express");
 const app = express();
+const morgan = require("morgan");
+
+// morgan logger configuration
+morgan.token('body', function(request, response) {
+    return json.stringify(request.body);
+})
 
 app.use(express.json());
+app.use(morgan('method :url :status :response-time ms :body'));
+
 
 let persons = [
     {
