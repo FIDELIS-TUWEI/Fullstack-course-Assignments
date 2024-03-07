@@ -1,15 +1,6 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
-const morgan = require("morgan");
-
-// morgan logger configuration
-morgan.token('body', function(request, response) {
-    return json.stringify(request.body);
-})
-
-app.use(express.json());
-app.use(morgan('method :url :status :response-time ms :body'));
-
 
 let persons = [
     {
@@ -33,6 +24,25 @@ let persons = [
         number: "39-23-6423122"
     },
 ];
+
+app.use(express.static('dist'));
+
+const requestLogger = (request, response, next) => {
+    console.log('Method:', request.method);
+    console.log('Path:', request.path);
+    console.log('Body:', request.body);
+    console.log('---');
+    next()
+}
+
+app.use(cors());
+app.use(express.json());
+app.use(requestLogger);
+
+// Unknown endpoints
+const notFound = (request, response) => {
+    response.status(404).send({ error: "Unknown Endpoint!" })
+}
 
 app.get("/", (request, response) => {
     return response.send("Backend Server is running")
@@ -110,6 +120,7 @@ app.get("/info", (request, response) => {
     )
 });
 
+app.use(notFound)
 // Disable server fingerprinting
 app.disable('x-powered-by');
 
