@@ -20,17 +20,35 @@ const phoneBookSchema = new mongoose.Schema({
 
 const Phonebook = mongoose.model('Phonebook', phoneBookSchema);
 
-const name = process.argv[3].replace('/-/g', ' ');
-const number = process.argv[4];
-
-if (!name || !number) {
-    console.log("Name or Number is missing!");
-    process.exit(1)
+async function listEntries() {
+    try {
+        const entries = await Phonebook.find({});
+        console.log("phonebook:");
+        entries.forEach(entry => {
+            console.log(`${entry.name} ${entry.number}`);
+        });
+    } catch (err) {
+        console.error("Error fetching phonebook entries:", err);
+    } finally {
+        mongoose.connection.close();
+    }
 }
 
-const phonebook = new Phonebook({ name, number });
+if (process.argv.length === 3) {
+    listEntries();
+} else {
+    const name = process.argv[3].replace('/-/g', ' ');
+    const number = process.argv[4];
 
-phonebook.save().then(result => {
-    console.log(`Added ${name} number ${number} to phonebook`);
-    mongoose.connection.close();
-});
+    if (!name || !number) {
+        console.log("Name or Number is missing!");
+        process.exit(1)
+    }
+
+    const phonebook = new Phonebook({ name, number });
+
+    phonebook.save().then(result => {
+        console.log(`Added ${name} number ${number} to phonebook`);
+        mongoose.connection.close();
+    });
+}
