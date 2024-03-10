@@ -20,7 +20,7 @@ const phoneBookSchema = new mongoose.Schema({
 
 const Phonebook = mongoose.model('Phonebook', phoneBookSchema);
 
-const name = process.argv[3];
+const name = process.argv[3].replace('/-/g', ' ');
 const number = process.argv[4];
 
 if (!name || !number) {
