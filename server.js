@@ -1,31 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const Phonebook = require("./models/phoneBook");
 const app = express();
-
-let persons = [
-    {
-        id: 1,
-        name: "Arto Hellas",
-        number: "040-123456"
-    },
-    {
-        id: 2,
-        name: "Ada Lovelace",
-        number: "39-44-5323523"
-    },
-    {
-        id: 3,
-        name: "Dan Abramov",
-        number: "12-43-234345"
-    },
-    {
-        id: 4,
-        name: "Mary Poppendick",
-        number: "39-23-6423122"
-    },
-];
-
-app.use(express.static('dist'));
 
 const requestLogger = (request, response, next) => {
     console.log('Method:', request.method);
@@ -33,7 +9,7 @@ const requestLogger = (request, response, next) => {
     console.log('Body:', request.body);
     console.log('---');
     next()
-}
+};
 
 app.use(cors());
 app.use(express.json());
@@ -49,63 +25,40 @@ app.get("/", (request, response) => {
 })
 
 app.get("/api/persons", (request, response) => {
-    return response.json(persons);
+    Phonebook.find({}).then(persons => {
+        response.json(persons)
+    });
 });
 
 // get request for a single resource
 app.get("/api/persons/:id", (request, response) => {
-    const id = Number(request.params.id);
-    const person = persons.find(person => {
-        return person.id === id
+    Phonebook.findyId(request.params.id).then(person => {
+        response.json(person)
     });
-
-    if (person) {
-        return response.json(person);
-    } else {
-        return response.status(404).end();
-    }
 });
 
 // post request
 app.post("/api/persons", (request, response) => {
     const body = request.body;
-    const id = Number(request.params.id)
-    const existingPerson = persons.find(person => person.id === id);
 
-    if (!body.content) {
+    if (body.content === undefined) {
         return response.status(400).json({
             error: "name or number missing!"
         });
-    } else if(existingPerson) {
-        return response.status(400).json({
-            error: "name must be unique"
-        });
     }
 
-    const person = {
-        content: body.content,
-        important: body.important || false,
-        id: generateId(),
-    };
+    const person = new Phonebook({
+        name: body.name,
+        number: body.number
+    });
 
-    persons = persons.concat(person)
-
-    response.json(person);
+    person.save().then(savedPerson => {
+        response.json(savedPerson)
+    });
 });
-
-// generate random ID for post request
-const generateId = () => {
-    const maxId = persons.length > 0
-        ? Math.random(...persons.map(n => n.id))
-        : 0
-
-    return maxId + 1;
-}
 
 // delete request
 app.delete("/api/persons/:id", (request, response) => {
-    const id = Number(request.params.id);
-    persons = persons.filter(person => person.id !== id)
 
     response.status(204).end();
 });
