@@ -19,6 +19,7 @@ app.get("/", (request, response) => {
     return response.send("Backend Server is running")
 })
 
+// get request for all persons
 app.get("/api/persons", (request, response) => {
     Phonebook.find({}).then(persons => {
         response.json(persons)
@@ -54,7 +55,8 @@ app.get("/api/persons/:id", (request, response, next) => {
             } else {
                 response.status(404).end()
             }
-        }).catch(error => next(error));
+        })
+        .catch(error => next(error));
 });
 
 // put request for existing resource
@@ -69,7 +71,8 @@ app.put("/api/persons/:id", (request, response, next) => {
     Phonebook.findByIdAndUpdate(request.params.id, person, { new: true })
         .then(updatedPerson => {
             response.json(updatedPerson)
-        }).catch(error => next(error));
+        })
+        .catch(error => next(error));
 })
 
 // delete request
