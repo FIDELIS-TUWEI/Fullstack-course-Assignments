@@ -26,6 +26,16 @@ app.get("/api/persons", (request, response) => {
     });
 });
 
+app.get("/info", (request, response) => {
+    const timestamp = new Date().toString();
+    const count = Phonebook.length;
+    return response.send(
+        `Phonebook has info for ${count} people 
+        ${timestamp}
+    `
+    )
+});
+
 // post request
 app.post("/api/persons", (request, response) => {
     const body = request.body;
@@ -48,7 +58,7 @@ app.post("/api/persons", (request, response) => {
 
 // get request for a single resource
 app.get("/api/persons/:id", (request, response, next) => {
-    Phonebook.findyId(request.params.id)
+    Phonebook.findById(request.params.id)
         .then(person => {
             if (person) {
                 response.json(person)
@@ -82,16 +92,6 @@ app.delete("/api/persons/:id", (request, response, next) => {
             response.status(204).end()
         })
         .catch(error => next(error))
-});
-
-app.get("/info", (request, response) => {
-    const timestamp = new Date().toString();
-    const count = persons.length;
-    return response.send(
-        `Phonebook has info for ${count} people 
-        ${timestamp}
-    `
-    )
 });
 
 // Unknown endpoints
