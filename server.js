@@ -26,14 +26,16 @@ app.get("/api/persons", (request, response) => {
     });
 });
 
-app.get("/info", (request, response) => {
-    const timestamp = new Date().toString();
-    const count = Phonebook.length;
-    return response.send(
-        `Phonebook has info for ${count} people 
-        ${timestamp}
-    `
-    )
+app.get("/info", (request, response, next) => {
+    Phonebook.find({}).countDocuments()
+        .then(count => {
+            const timestamp = new Date().toString();
+            response.send(
+                `Phonebook has info for ${count} people\n${timestamp}
+            `
+            )
+        })
+        .catch(error => next(error));
 });
 
 // post request
