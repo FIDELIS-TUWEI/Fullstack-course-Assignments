@@ -21,8 +21,13 @@ const phoneBookSchema = new mongoose.Schema({
     name: {
         type: String,
         minLength: 3,
+        required: true
     },
-    number: String,
+    number: {
+        type: String,
+        required: true,
+        minLength: [8, "Number must be atleast 8 characters long"]
+    },
 });
 
 phoneBookSchema.set('toJSON', {
