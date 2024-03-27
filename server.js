@@ -73,14 +73,9 @@ app.get("/api/persons/:id", (request, response, next) => {
 
 // put request for existing resource
 app.put("/api/persons/:id", (request, response, next) => {
-    const body = request.body;
+    const { name, number } = req.body;
 
-    const person = {
-        name: body.name,
-        number: body.number
-    };
-
-    Phonebook.findByIdAndUpdate(request.params.id, person, { new: true })
+    Phonebook.findByIdAndUpdate(request.params.id, { name, number }, { new: true, runValidators: true, context: 'query' })
         .then(updatedPerson => {
             response.json(updatedPerson)
         })
