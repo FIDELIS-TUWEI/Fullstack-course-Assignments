@@ -39,7 +39,7 @@ app.get("/info", (request, response, next) => {
 });
 
 // post request
-app.post("/api/persons", (request, response) => {
+app.post("/api/persons", (request, response, next) => {
     const body = request.body;
 
     if (!body.name || !body.number) {
@@ -53,9 +53,11 @@ app.post("/api/persons", (request, response) => {
         number: body.number
     });
 
-    person.save().then(savedPerson => {
-        response.json(savedPerson)
-    });
+    person.save()
+        .then(savedPerson => {
+            response.json(savedPerson)
+        })
+        .catch(error => next(error));
 });
 
 // get request for a single resource
