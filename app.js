@@ -1,11 +1,11 @@
 const config = require("./utils/config");
 const express = require("express");
+const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
-const blogRouter = require("./controller/blogController");
+const blogsRouter = require("./controller/blogController");
 const middleware = require("./utils/middleware");
 const logger = require("./utils/logger");
-const { default: mongoose } = require("mongoose");
 
 mongoose.set("strictQuery", false);
 
@@ -25,7 +25,7 @@ app.use(cors());
 app.use(middleware.requestLogger);
 app.disable("x-powered-by");
 
-app.use('/api/v1/blogs', blogRouter);
+app.use('/api/v1/blogs', blogsRouter);
 app.use(middleware.unKnownEndpoint);
 app.use(middleware.errorHandler);
 
