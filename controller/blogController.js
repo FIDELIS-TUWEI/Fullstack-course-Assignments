@@ -1,8 +1,8 @@
-const blogRouter = require("express").Router();
+const blogsRouter = require('express').Router();
 const Blog = require("../models/blog");
 
-blogRouter.get('/', (request, response) => {
+blogsRouter.get('/', (request, response) => {
     response.send("Blog List Server running")
 });
 
-module.export = blogRouter;
+module.exports = blogsRouter;
