@@ -177,4 +177,18 @@ describe('favorite blog', () => {
             likes: 12,
           })
     });
+});
+
+describe('most blogs', () => {
+    test('many record blogs, return one', () => {
+        const blogs = [
+            { author: "Robert C. Martin", blogs: 3 },
+            { author: "John Doe", blogs: 2 },
+            { author: "Robert C. Martin", blogs: 1 },
+            { author: "Jane Smith", blogs: 4 }
+        ];
+
+        const result = listHelper.mostBlogs(blogs);
+        assert(result);
+    })
 })
