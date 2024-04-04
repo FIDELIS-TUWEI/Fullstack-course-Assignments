@@ -191,4 +191,19 @@ describe('most blogs', () => {
         const result = listHelper.mostBlogs(blogs);
         assert(result);
     })
+});
+
+describe('most likes', () => {
+    test('many favorite bloggers, return only one', () => {
+        const blogs = [
+            { author: "Robert C. Martin", likes: 13 },
+            { author: "Edsger W. Dijkstra", likes: 17 },
+            { author: "John Doe", likes: 2 },
+            { author: "Robert C. Martin", likes: 10 },
+            { author: "Jane Smith", likes: 4 }
+        ];
+        const result = listHelper.mostLikes(blogs);
+
+        assert(result);
+    })
 })
