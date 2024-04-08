@@ -32,8 +32,21 @@ app.get('/', (request, response) => {
     response.send('Backend Server running...')
 })
 
+// get all persons
 app.get('/api/persons', (request, response) => {
     response.json(persons);
+});
+
+// get single resource with id
+app.get('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id);
+    const person = persons.find(person => person.id === id);
+
+    if (person) {
+        response.json(person);
+    } else {
+        response.status(404).end();
+    }
 });
 
 app.get('/info', (request, response) => {
