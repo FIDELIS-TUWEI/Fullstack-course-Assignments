@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+
 const persons = [
     { 
       "id": 1,
@@ -30,6 +31,29 @@ app.disable("x-powered-by");
 
 app.get('/', (request, response) => {
     response.send('Backend Server running...')
+})
+
+app.post('/api/persons', (request, response) => {
+    const { name, number } = request.body;
+
+    if (!name || !number) {
+        return request.status(400).json({
+            error: 'name or number missing'
+        })
+    };
+
+    const existingPerson = persons.find(entry => entry.name === name);
+
+    if (existingPerson) {
+        return response.status(400).json({ error: 'Name must be unique' });
+    }
+
+    const id = Math.floor(Math.random() * 1000000) + 1;
+
+    const person = { id, name, number };
+    persons.push(person);
+
+    response.status(201).json(person);
 })
 
 // get all persons
