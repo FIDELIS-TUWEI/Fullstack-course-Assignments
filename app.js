@@ -42,6 +42,18 @@ app.get('/', (request, response) => {
 app.get('/api/persons', (request, response) => {
     response.json(persons);
 });
+
+app.get('/info', (request, response) => {
+    const timeReceived = new Date();
+    const entriesCount = persons.length;
+
+    const info = `
+        Phonebook has info for ${entriesCount}\n ${timeReceived}
+    `;
+
+    response.send(info);
+});
+
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
 
