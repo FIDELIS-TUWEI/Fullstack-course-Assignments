@@ -58,14 +58,9 @@ app.get('/api/persons', (request, response) => {
 
 // get single resource with id
 app.get('/api/persons/:id', (request, response) => {
-    const id = request.params.id;
-    const person = Person.findById(id);
-
-    if (person) {
+    Person.findById(request.params.id).then(person => {
         response.json(person);
-    } else {
-        response.status(404).end();
-    }
+    })
 });
 
 // deleting a resource route
