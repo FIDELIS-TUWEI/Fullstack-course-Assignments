@@ -41,7 +41,7 @@ app.get('/info', (request, response) => {
     const entriesCount = persons.length;
 
     const info = `
-        Phonebook has info for ${entriesCount}\n ${timeReceived}
+        Phonebook has info for ${entriesCount}<br /> ${timeReceived}
     `;
 
     response.send(info);
