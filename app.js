@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const morgan = require("morgan");
 
 const persons = [
     { 
@@ -25,14 +26,6 @@ const persons = [
     }
 ];
 
-const requestLogger = (request, response, next) => {
-    console.log('Method:', request.method)
-    console.log('Path:  ', request.path)
-    console.log('Body:  ', request.body)
-    console.log('---')
-    next()
-};
-
 const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
 };
@@ -40,6 +33,7 @@ const unknownEndpoint = (request, response) => {
 
 app.use(express.json());
 app.use(cors());
+app.use(morgan('dev'))
 app.disable("x-powered-by");
 
 app.get('/', (request, response) => {
@@ -105,7 +99,6 @@ app.get('/info', (request, response) => {
     response.send(info);
 });
 
-app.use(requestLogger);
 app.use(unknownEndpoint);
 
 
