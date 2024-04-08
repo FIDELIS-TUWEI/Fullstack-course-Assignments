@@ -19,17 +19,16 @@ app.get('/', (request, response) => {
 })
 
 app.post('/api/persons', (request, response) => {
-    const existingPerson = Person.findOne({ name: request.body.name });
+    const body = request.body;
 
-    if (existingPerson) {
-        return response.status(400).json({ error: "Person already exists" })
-    };
+    const person = new Person ({
+        name: body.name,
+        number: body.number
+    });
 
-    const person = Person.create(req.body);
-
-    if (person) {
-        response.status(201).json(person)
-    };
+    person.save().then(savedPerson => {
+        response.json(savedPerson)
+    });
 })
 
 // get all persons
