@@ -71,10 +71,12 @@ app.get('/api/persons/:id', (request, response, next) => {
 });
 
 // deleting a resource route
-app.delete('/api/persons/:id', (request, response) => {
-    
-
-    response.status(204).end();
+app.delete('/api/persons/:id', (request, response, next) => {
+    Person.findByIdAndDelete(request.params.id)
+        .then(result => {
+            response.status(204).end();
+        })
+        .catch(error => next(error));
 })
 
 app.get('/info', (request, response) => {
