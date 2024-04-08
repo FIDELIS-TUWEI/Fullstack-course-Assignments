@@ -1,12 +1,5 @@
-//const config = require('./utils/config');
-const express = require("express");
-//const mongoose = require('mongoose');
-const cors = require("cors");
-const app = express();
-//const notesRouter = require('./controllers/notes');
-const middleware = require('./utils/middleware');
-//const logger = require('./utils/logger');
-
+const express = require("express");const cors = require("cors");
+const app = express();const middleware = require('./utils/middleware');
 const persons = [
     { 
       "id": 1,
@@ -53,8 +46,5 @@ app.get('/info', (request, response) => {
 
     response.send(info);
 });
-
-app.use(middleware.unknownEndpoint);
-app.use(middleware.errorHandler);
 
 module.exports = app;
