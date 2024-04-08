@@ -6,6 +6,7 @@ const morgan = require("morgan");
 const Person = require("./models/person");
 const config = require("./utils/config");
 const logger = require("./utils/logger");
+const errorHandler = require("./utils/errorHandler");
 
 const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
@@ -57,7 +58,7 @@ app.get('/api/persons', (request, response) => {
 });
 
 // get single resource with id
-app.get('/api/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response, next) => {
     Person.findById(request.params.id)
         .then(person => {
             if (person) {
@@ -66,10 +67,7 @@ app.get('/api/persons/:id', (request, response) => {
                 response.status(404).end()
             }
         })
-        .catch(error => {
-            logger.error(error);
-            response.status(500).end();
-        })
+        .catch(error => next(error));
 });
 
 // deleting a resource route
@@ -91,6 +89,7 @@ app.get('/info', (request, response) => {
 });
 
 app.use(unknownEndpoint);
+app.use(errorHandler);
 
 
 module.exports = app;
