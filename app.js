@@ -81,7 +81,7 @@ app.delete('/api/persons/:id', (request, response) => {
 
 app.get('/info', (request, response) => {
     const timeReceived = new Date();
-    const entriesCount = persons.length;
+    const entriesCount = Person.length;
 
     const info = `
         Phonebook has info for ${entriesCount}<br /> ${timeReceived}
