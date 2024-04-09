@@ -32,7 +32,7 @@ app.use(morgan('dev'))
 app.disable("x-powered-by");
 
 app.get('/', (request, response) => {
-    response.send('Backend Server running...')
+    response.send('Backend Server is up and running...')
 });
 
 // get all persons
