@@ -1,7 +1,7 @@
-PUT http://localhost:3001/api/persons/66142da2af5b5165d135efce
+PUT http://localhost:3001/api/persons/6614c495062a3778972882ab
 Content-Type: application/json
 
 {
-    "name": "Arto Hellas",
-    "number": "236-85795441"
+    "name": "Arto Vihavainen",
+    "number": "040-123456"
 }
