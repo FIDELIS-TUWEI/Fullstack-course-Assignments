@@ -33,8 +33,17 @@ app.disable("x-powered-by");
 
 app.get('/', (request, response) => {
     response.send('Backend Server running...')
-})
+});
 
+// get all persons
+app.get('/api/persons', (request, response) => {
+    Person.find({})
+        .then(persons => {
+            response.json(persons)
+        })
+});
+
+// new person route
 app.post('/api/persons', (request, response) => {
     const body = request.body;
 
@@ -46,15 +55,6 @@ app.post('/api/persons', (request, response) => {
     person.save().then(savedPerson => {
         response.json(savedPerson)
     });
-})
-
-// get all persons
-app.get('/api/persons', (request, response) => {
-    Person.find({})
-        .then(persons => {
-            response.json(persons)
-        })
-
 });
 
 // get single resource with id
