@@ -14,7 +14,7 @@ const unknownEndpoint = (request, response) => {
 
 mongoose.set("strictQuery", false);
 
-logger.info("Connecting to", config.MONGODB_URI);
+logger.info("Connecting to MongoDB Database...");
 
 // Database connection
 mongoose.connect(config.MONGODB_URI)
