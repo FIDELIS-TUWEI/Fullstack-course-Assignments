@@ -6,22 +6,17 @@ blogsRouter.get('/', (request, response) => {
 });
 
 // request to fetch all blogs
-blogsRouter.get("/api/v1/blogs", (request, response) => {
-    Blog.find({})
-        .then(blogs => {
-            response.json(blogs);
-        })
+blogsRouter.get("/api/v1/blogs", async (request, response) => {
+    const blogs = await Blog.find({});
+    response.json(blogs);
 })
 
 // request to create new blog
-blogsRouter.post("/api/v1/blogs", (request, response, next) => {
+blogsRouter.post("/api/v1/blogs", async (request, response, next) => {
     const blog = new Blog(request.body);
 
-    blog.save()
-        .then(result => {
-            response.status(200).json(result)
-        })
-        .catch(error => next(error));
+    const savedBlog = await blog.save();
+    response.status(201).json(savedBlog)
 });
 
 module.exports = blogsRouter;
