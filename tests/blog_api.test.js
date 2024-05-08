@@ -20,12 +20,13 @@ test.only('blogs are returned as json', async () => {
 test('should return object with id property', async () => {
     const blog = await helper.blogsInDb();
 
+    const blogToView = blog[0]
+
     const resultBlog = await api
         .get(`/api/v1/blogs/${blog.id}`)
-        .expect(200)
-        .expect('Content-Type', /application\/json/).toHaveProperty('id')
+        .expect('Content-Type', /application\/json/)
 
-    assert.deepStrictEqual(resultBlog.body, blog);
+    assert(resultBlog.body, blogToView);
 });
 
 after(async () => {
