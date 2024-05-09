@@ -50,6 +50,22 @@ test('should create a new blog post', async () => {
     assert(titles.includes('Atomic Habits'));
 });
 
+test('should default likes to 0 if missing from request', async () => {
+    const newBlog = {
+        title: "Default likes",
+        author: "Robert Greene",
+        url: "https://defaultlikes.blog"
+    };
+
+    const resultBlog = await api
+        .post(`/api/v1/blogs`)
+        .send(newBlog)
+        .expect(201)
+        .expect("Content-Type", /application\/json/);
+
+    assert.strictEqual(resultBlog.body.likes, 0);
+});
+
 after(async () => {
     await mongoose.connection.close()
 });
