@@ -15,6 +15,8 @@ blogsRouter.get("/blogs", async (request, response) => {
 blogsRouter.post("/blogs", async (request, response) => {
     const body = request.body;
 
+    if (!body.title || !body.url) return response.status(400).json({ error: "Post Missing title or url" });
+
     // set likes to 0 if missing in request
     const likes = body.likes !== undefined ? body.likes : 0;
 
@@ -24,6 +26,7 @@ blogsRouter.post("/blogs", async (request, response) => {
         ur: body.url,
         likes: likes
     });
+
 
     const savedBlog = await blog.save();
     response.status(201).json(savedBlog)
