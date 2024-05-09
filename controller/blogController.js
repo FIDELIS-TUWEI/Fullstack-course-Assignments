@@ -12,14 +12,17 @@ blogsRouter.get("/blogs", async (request, response) => {
 })
 
 // request to create new blog
-blogsRouter.post("/blogs", async (request, response, next) => {
+blogsRouter.post("/blogs", async (request, response) => {
     const body = request.body;
+
+    // set likes to 0 if missing in request
+    const likes = body.likes !== undefined ? body.likes : 0;
 
     const blog = new Blog({
         title: body.title,
         author: body.author,
         ur: body.url,
-        likes: body.likes
+        likes: likes
     });
 
     const savedBlog = await blog.save();
