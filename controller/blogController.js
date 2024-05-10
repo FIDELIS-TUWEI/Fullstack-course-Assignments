@@ -39,6 +39,17 @@ blogsRouter.get("/blog/:id", async (request, response) => {
     if (!blog) return res.status(400).json({ error: "Blog not found" });
 
     res.status(200).json(blog);
-})
+});
+
+// request to delete a single resource
+blogsRouter.delete("/blogs/:id", async (request, response) => {
+    const blogId = request.params.id;
+
+    const deleteBlog = await Blog.findByIdAndDelete(blogId);
+
+    if (!deleteBlog) return response.status(404).json({ error: "Blog not found" });
+    
+    response.status(204).end();
+});
 
 module.exports = blogsRouter;
