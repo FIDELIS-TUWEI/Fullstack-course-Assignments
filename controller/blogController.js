@@ -38,7 +38,21 @@ blogsRouter.get("/blog/:id", async (request, response) => {
 
     if (!blog) return res.status(400).json({ error: "Blog not found" });
 
-    res.status(200).json(blog);
+    response.status(200).json(blog);
+})
+
+// request to update blog 
+blogsRouter.put("/api/blogs/:id", async (request, response) => {
+    const blogId = request.params.id;
+    const { likes } = request.body;
+    const blog = await Blog.findById(blogId);
+
+    if (!blog) return response.status(404).json({ error: "Blog not found" });
+
+    blog.likes = likes;
+    await blog.save();
+
+    response.status(200).json(blog);
 });
 
 // request to delete a single resource
@@ -48,7 +62,7 @@ blogsRouter.delete("/blogs/:id", async (request, response) => {
     const deleteBlog = await Blog.findByIdAndDelete(blogId);
 
     if (!deleteBlog) return response.status(404).json({ error: "Blog not found" });
-    
+
     response.status(204).end();
 });
 
