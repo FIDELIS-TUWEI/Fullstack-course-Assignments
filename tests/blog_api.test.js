@@ -80,7 +80,7 @@ test('fails with status code 400 if missing title or url from request', async ()
 
     const blogsAtEnd = await helper.blogsInDb();
 
-    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length);
+    assert.strict(blogsAtEnd.length, helper.initialBlogs.length);
 
 })
 
