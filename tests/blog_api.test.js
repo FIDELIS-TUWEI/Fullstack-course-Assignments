@@ -1,4 +1,4 @@
-const { test, after } = require('node:test')
+const { test, after, beforeEach, describe } = require('node:test')
 const assert = require('node:assert')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
@@ -7,6 +7,13 @@ const api = supertest(app);
 
 const helper = require("./test_helper");
 const Blog = require("../models/blog");
+
+describe('where there is initially some blogs saved', () => {
+    beforeEach(async () => {
+        await Blog.deleteMany({});
+        await Blog.insertMany(helper.initialBlogs);
+    });
+});
 
 test.only('blogs are returned as json', async () => {
     await
@@ -82,7 +89,26 @@ test('fails with status code 400 if missing title or url from request', async ()
 
     assert.strict(blogsAtEnd.length, helper.initialBlogs.length);
 
-})
+});
+
+describe('delete single blog', () => {
+    test('succeeds with status code 204 if id is valid', async () => {
+        const blogsAtStart = await helper.blogsInDb();
+        const blogToDelete = blogsAtStart[0];
+    
+        await api
+            .delete(`/api/v1/blogs/${blogToDelete.id}`)
+            .expect(204);
+        
+            const blogsAtEnd = await helper.blogsInDb();
+    
+            assert.strict(blogsAtEnd.length, helper.initialBlogs.length - 1);
+    
+            const titles = blogsAtEnd.map(blog => blog.title);
+            assert(titles.includes(blogToDelete.content));
+    });
+});
+
 
 after(async () => {
     await mongoose.connection.close()
