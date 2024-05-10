@@ -105,9 +105,26 @@ describe('delete single blog', () => {
             assert.strict(blogsAtEnd.length, helper.initialBlogs.length - 1);
     
             const titles = blogsAtEnd.map(blog => blog.title);
-            assert(titles.includes(blogToDelete.content));
+            assert(titles.includes(blogToDelete.title));
     });
 });
+
+describe('update blog', () => {
+    test('succeeds with status code 200 and update blog if valid id', async () => {
+        const blogsAtStart = await helper.blogsInDb();
+        const blogToUpdate = blogsAtStart[0];
+
+        const updatedLikes = blogToUpdate.likes + 1;
+
+        const updatedBlog = await api
+            .put(`/api/v1/blogs/${blogToUpdate.id}`)
+            .send({ likes: updatedLikes })
+            .expect(200)
+            .expect("Content-Type", /application\/json/);
+
+        assert.deepStrictEqual(updatedBlog.likes, updatedLikes);
+    });
+})
 
 
 after(async () => {
