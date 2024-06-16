@@ -9,17 +9,17 @@ authRouter.post("/signup", async (request, response) => {
     const checkUser = await User.findOne({ username });
 
     if (checkUser) {
-        return response.status(409).json({ message: "Username already exists" });
+        return response.status(409).json({ error: "Username already exists" });
     };
 
     // check if username and password is provided
     if (!username || !name || !password) {
-        return response.status(400).json({ message: "Username, name and password are required" })
+        return response.status(400).json({ error: "Username, name and password are required" })
     };
 
     // check username and password length
     if (username.length < 3 || password.length < 3) {
-        return response.status(400).json({ message: "Username and Password must be atleast 3 characters long!" });
+        return response.status(400).json({ error: "Username and Password must be atleast 3 characters long!" });
     };
 
     const saltRounds = 10;
@@ -35,7 +35,7 @@ authRouter.post("/signup", async (request, response) => {
         const savedUser = await user.save();
         response.status(201).json(savedUser);
     } else {
-        return response.status(400).json({ message: "Invalid user data" })
+        return response.status(400).json({ error: "Invalid user data" })
     };
 });
 
