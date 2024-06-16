@@ -13,8 +13,8 @@ authRouter.post("/signup", async (request, response) => {
     };
 
     // check if username and password is provided
-    if (!username || !password) {
-        return response.status(400).json({ message: "Username and password are required" })
+    if (!username || !name || !password) {
+        return response.status(400).json({ message: "Username, name and password are required" })
     };
 
     // check username and password length
