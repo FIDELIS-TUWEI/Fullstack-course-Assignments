@@ -1,5 +1,5 @@
 const blogsRouter = require('express').Router();
-const Blog = require("../models/blog");
+const Blog = require("../models/blog.model");
 
 blogsRouter.get('/', (request, response) => {
     response.send("Blog List Server running")
