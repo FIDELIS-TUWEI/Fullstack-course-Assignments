@@ -1,5 +1,6 @@
 const blogsRouter = require('express').Router();
 const Blog = require("../models/blog.model");
+const User = require("../models/user.model");
 
 blogsRouter.get('/', (request, response) => {
     response.send("Blog List Server running")
@@ -7,13 +8,21 @@ blogsRouter.get('/', (request, response) => {
 
 // request to fetch all blogs
 blogsRouter.get("/blogs", async (request, response) => {
-    const blogs = await Blog.find({});
+    const blogs = await Blog.find({}).populate("user", { username: 1, name: 1 });
     response.json(blogs);
 })
 
 // request to create new blog
 blogsRouter.post("/blogs", async (request, response) => {
     const body = request.body;
+
+    // Include the user who created the blog
+    //const userId = request.user._id;
+    const user = await User.findOne().select("-password");
+
+    if (!user) {
+        return response.status(404).json({ error: `User with ID: ${userId} not found` })
+    }
 
     if (!body.title || !body.url) return response.status(400).json({ error: "Post Missing title or url" });
 
@@ -24,7 +33,8 @@ blogsRouter.post("/blogs", async (request, response) => {
         title: body.title,
         author: body.author,
         ur: body.url,
-        likes: likes
+        likes: likes,
+        user: user._id
     });
 
 
