@@ -2,10 +2,10 @@
   "name": "fullstack-course-assignments",
   "version": "1.0.0",
   "description": "Full-stack Backend Course assignments",
-  "main": "server.js",
+  "main": "src/server.js",
   "scripts": {
     "start": "cross-env NODE_ENV=production node server.js",
-    "dev": "cross-env NODE_ENV=development nodemon server.js",
+    "dev": "cross-env NODE_ENV=development nodemon src/server.js",
     "test": "cross-env NODE_ENV=test node --test",
     "lint": "eslint ."
   },
