@@ -5,6 +5,7 @@ const cors = require("cors");
 const app = express();
 const blogsRouter = require("./controller/blogController");
 const authRouter = require("./controller/auth.controller");
+const userRouter = require("./controller/user.controller");
 const middleware = require("./utils/middleware");
 const logger = require("./utils/logger");
 
@@ -29,6 +30,7 @@ app.disable("x-powered-by");
 
 app.use('/api/v1', blogsRouter);
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/users', userRouter);
 
 app.use(middleware.unKnownEndpoint);
 app.use(middleware.errorHandler);
