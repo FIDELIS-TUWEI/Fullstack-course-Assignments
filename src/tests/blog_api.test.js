@@ -1,3 +1,4 @@
+const Blog = require("../models/blog.model");
 const { test, after, beforeEach, describe } = require('node:test')
 const assert = require('node:assert')
 const mongoose = require('mongoose')
@@ -6,7 +7,6 @@ const app = require('../app')
 const api = supertest(app);
 
 const helper = require("./test_helper");
-const Blog = require("../models/blog");
 
 describe('where there is initially some blogs saved', () => {
     beforeEach(async () => {
