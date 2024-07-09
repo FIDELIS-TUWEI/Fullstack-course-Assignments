@@ -13,33 +13,34 @@ blogsRouter.get("/blogs", async (request, response) => {
 })
 
 // request to create new blog
-blogsRouter.post("/blogs", async (request, response) => {
+blogsRouter.post('/blogs', async (request, response) => {
     const body = request.body;
 
-    // Include the user who created the blog
-    //const userId = request.user._id;
-    const user = await User.findOne().select("-password");
-
-    if (!user) {
-        return response.status(404).json({ error: `User with ID: ${userId} not found` })
+    if (!body.title || !body.url) {
+        return response.status(400).json({ error: 'Post missing title or url' });
     }
 
-    if (!body.title || !body.url) return response.status(400).json({ error: "Post Missing title or url" });
+    // Fetch all users from the database
+    const users = await User.find({}).populate("name");
+    if (users.length === 0) {
+        return response.status(500).json({ error: 'No users found in the database' });
+    }
 
-    // set likes to 0 if missing in request
+    // Randomly select a user to be the creator of the blog
+    const randomUser = users[Math.floor(Math.random() * users.length)];
+
     const likes = body.likes !== undefined ? body.likes : 0;
 
     const blog = new Blog({
         title: body.title,
         author: body.author,
-        ur: body.url,
+        url: body.url,
         likes: likes,
-        user: user._id
+        user: randomUser._id,
     });
 
-
     const savedBlog = await blog.save();
-    response.status(201).json(savedBlog)
+    response.status(201).json(savedBlog);
 });
 
 // request to fetch single source with id
