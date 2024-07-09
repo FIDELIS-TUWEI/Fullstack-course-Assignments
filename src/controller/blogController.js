@@ -21,7 +21,7 @@ blogsRouter.post('/blogs', async (request, response) => {
     }
 
     // Fetch all users from the database
-    const users = await User.find({}).populate("name");
+    const users = await User.find({})
     if (users.length === 0) {
         return response.status(500).json({ error: 'No users found in the database' });
     }
