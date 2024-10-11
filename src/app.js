@@ -28,7 +28,7 @@ app.use(cors());
 app.use(middleware.requestLogger);
 app.disable("x-powered-by");
 
-app.use('/api/v1', blogsRouter);
+app.use('/api/v1/blogs', blogsRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
 

@@ -2,18 +2,18 @@ const blogsRouter = require('express').Router();
 const Blog = require("../models/blog.model");
 const User = require("../models/user.model");
 
-blogsRouter.get('/', (request, response) => {
+blogsRouter.get('/v1', (request, response) => {
     response.send("Blog List Server running")
 });
 
 // request to fetch all blogs
-blogsRouter.get("/blogs", async (request, response) => {
+blogsRouter.get("/", async (request, response) => {
     const blogs = await Blog.find({}).populate("user", { username: 1, name: 1 });
     response.json(blogs);
 })
 
 // request to create new blog
-blogsRouter.post('/blogs', async (request, response) => {
+blogsRouter.post('/', async (request, response) => {
     const body = request.body;
 
     if (!body.title || !body.url) {
@@ -44,7 +44,7 @@ blogsRouter.post('/blogs', async (request, response) => {
 });
 
 // request to fetch single source with id
-blogsRouter.get("/blog/:id", async (request, response) => {
+blogsRouter.get("/:id", async (request, response) => {
     const blog = await Blog.findById(request.params.id);
 
     if (!blog) return res.status(400).json({ error: "Blog not found" });
@@ -53,7 +53,7 @@ blogsRouter.get("/blog/:id", async (request, response) => {
 })
 
 // request to update blog 
-blogsRouter.put("/api/blogs/:id", async (request, response) => {
+blogsRouter.put("/:id", async (request, response) => {
     const blogId = request.params.id;
     const { likes } = request.body;
     const blog = await Blog.findById(blogId);
@@ -67,7 +67,7 @@ blogsRouter.put("/api/blogs/:id", async (request, response) => {
 });
 
 // request to delete a single resource
-blogsRouter.delete("/blogs/:id", async (request, response) => {
+blogsRouter.delete("/:id", async (request, response) => {
     const blogId = request.params.id;
 
     const deleteBlog = await Blog.findByIdAndDelete(blogId);
