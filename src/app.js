@@ -32,6 +32,10 @@ app.use('/api/v1/blogs', blogsRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
 
+app.get('/api/v1', (request, response) => {
+    response.json("Blog List Server running")
+});
+
 app.use(middleware.unKnownEndpoint);
 app.use(middleware.errorHandler);
 

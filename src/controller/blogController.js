@@ -2,10 +2,6 @@ const blogsRouter = require('express').Router();
 const Blog = require("../models/blog.model");
 const User = require("../models/user.model");
 
-blogsRouter.get('/v1', (request, response) => {
-    response.send("Blog List Server running")
-});
-
 // request to fetch all blogs
 blogsRouter.get("/", async (request, response) => {
     const blogs = await Blog.find({}).populate("user", { username: 1, name: 1 });
