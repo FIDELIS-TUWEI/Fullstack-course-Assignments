@@ -51,15 +51,21 @@ blogsRouter.get("/:id", async (request, response) => {
 // request to update blog 
 blogsRouter.put("/:id", async (request, response) => {
     const blogId = request.params.id;
-    const { likes } = request.body;
-    const blog = await Blog.findById(blogId);
+    const body= request.body;
 
-    if (!blog) return response.status(404).json({ error: "Blog not found" });
+    const updatedBlog = {
+        title: body.title,
+        author: body.author,
+        url: body.url,
+        likes: body.likes,
+        user: body.user
+    };
 
-    blog.likes = likes;
-    await blog.save();
+    const updated = await Blog.findByIdAndUpdate(blogId, updatedBlog, { new: true, runValidators: true });
 
-    response.status(200).json(blog);
+    if (!updated) return response.status(404).json({ error: "Blog not found" });
+
+    response.status(200).json(updated);
 });
 
 // request to delete a single resource
